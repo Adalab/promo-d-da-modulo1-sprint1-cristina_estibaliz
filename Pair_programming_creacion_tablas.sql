@@ -28,12 +28,17 @@ CREATE TABLE empleados (
 
 CREATE TABLE facturas (
 	id_factura INT AUTO_INCREMENT NOT NULL,
-    numero_factura VARCHAR (45) NOT NULL, 
+    numero_factura VARCHAR(45) NOT NULL, 
     fecha DATE NOT NULL,
+    id_empleados INT NOT NULL,
+    id_cliente INT,
+    id_zapatilla INT,
     PRIMARY KEY (id_factura),
 	CONSTRAINT `fk_empleados_facturas`
 		FOREIGN KEY (id_empleados) 
-        REFERENCES facturas (id_factura)
-			[ON DELETE CASCADE id_empleados]
-            );
-		
+        REFERENCES empleados (id_empleados),
+        FOREIGN KEY (id_zapatilla)
+        REFERENCES zapatillas (id_zapatilla),
+        FOREIGN KEY (id_cliente)
+        REFERENCES clientes (id_cliente)
+        );
