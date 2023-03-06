@@ -56,15 +56,19 @@ AS ImporteTotal
 Ahora, no sabemos bien por qué razón, desde el departamento de Ventas nos piden seleccionar el ID de 
 los pedidos situados entre la 5 y la 10 mejor posición en cuanto al coste económico total ImporteTotal.*/
 
-SELECT (unit_price * quantity)
-	FROM ImporteTotal
-    WHERE order_id BETWEEN 4 AND 11;
+SELECT order_id
+	FROM order_details
+    ORDER BY (unit_price * quantity) 
+	LIMIT 5
+	OFFSET 4;
     
 
 /*7. Qué categorías tenemos en nuestra BBDD:
 De cara a ver cómo de diversificado está el negocio, se nos solicita una lista de las categorías que componen los 
 tipos de pedido de la empresa. Queremos que la lista de resultado sea renombrada como "NombreDeCategoria".*/
 
+SELECT category_name AS NombreDeCategoria
+	FROM categories;
 
 /*8. Selecciona envios con retraso:
 Nos hacen llegar desde la dirección la preocupación acerca del cumplimiento de las fechas de envío. 
@@ -74,14 +78,24 @@ nos piden conocer cuál sería la fecha de envío (ShippedDate) de los pedidos a
 si estos sufrieran un retraso de 5 días. Nos piden mostrar la nueva fecha renombrada como FechaRetrasada.
 💡 Pista 💡 Para realizar lo anterior, busca documentación de la función DATE_ADD para MySQL.*/
 
+SELECT order_date, shipped_date, DATE_ADD(shipped_date, INTERVAL 5 DAY) AS FechaRetrasada
+FROM orders; 
 
 /*9. Selecciona los productos más rentables:
 Gracias a un análisis realizado en los últimos meses en la empresa, se ha comprobado que el rango de
 productos que puede dar más beneficios parece ser el de aquellos con un precio mayor o igual a 15 dólares, 
 pero menor o igual que 50 dólares. Selecciona los datos de ese rango de productos usando el operador BETWEEN.*/
 
+SELECT product_name, unit_price
+	FROM products
+    WHERE unit_price BETWEEN 15 AND 50; 
 
 /*10. Selecciona los productos con unos precios dados:
 Queremos conocer los datos de los productos que tengan exactamente un precio de 18, 19 o 20 dólares 
 (un rango muy concreto de precios del que la empresa quiere maximizar sus ventas en un futuro). 
 Usa IN para conseguirlo de manera eficiente.*/
+
+SELECT product_name, unit_price
+	FROM products
+    WHERE unit_price IN (18, 19, 20); 
+    
